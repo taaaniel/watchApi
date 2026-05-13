@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using WatchAppApi.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("WatchAppDb")
+    ?? throw new InvalidOperationException("Connection string 'WatchAppDb' was not found.");
 
 // Controllers
 builder.Services.AddControllers()
@@ -7,11 +12,13 @@ builder.Services.AddControllers()
 		options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
 	});
 
-builder.Services.AddSingleton<WatchAppApi.Data.IWatchDataStore, WatchAppApi.Data.JsonWatchDataStore>();
-
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IWatchRepository, WatchRepository>();
+
+builder.Services.AddDbContext<WatchAppDbContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 

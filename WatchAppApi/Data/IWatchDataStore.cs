@@ -4,6 +4,6 @@ namespace WatchAppApi.Data;
 
 public interface IWatchDataStore
 {
-    IReadOnlyList<WatchDto> GetAll();
-    WatchDto? GetById(int id);
+    IReadOnlyList<Watch> GetAll();
+    Watch? GetById(int id);
 }

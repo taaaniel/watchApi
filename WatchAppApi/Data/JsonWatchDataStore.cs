@@ -6,7 +6,7 @@ namespace WatchAppApi.Data;
 
 public class JsonWatchDataStore : IWatchDataStore
 {
-    private readonly IReadOnlyList<WatchDto> _watches;
+    private readonly IReadOnlyList<Watch> _watches;
 
     public JsonWatchDataStore(IWebHostEnvironment environment)
     {
@@ -19,14 +19,14 @@ public class JsonWatchDataStore : IWatchDataStore
 
         using var stream = File.OpenRead(filePath);
 
-        _watches = JsonSerializer.Deserialize<List<WatchDto>>(stream, new JsonSerializerOptions
+        _watches = JsonSerializer.Deserialize<List<Watch>>(stream, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
             Converters = { new JsonStringEnumConverter() }
         }) ?? throw new InvalidOperationException("Sample watch data file is empty or invalid.");
     }
 
-    public IReadOnlyList<WatchDto> GetAll() => _watches;
+    public IReadOnlyList<Watch> GetAll() => _watches;
 
-    public WatchDto? GetById(int id) => _watches.FirstOrDefault(watch => watch.Id == id);
+    public Watch? GetById(int id) => _watches.FirstOrDefault(watch => watch.Id == id);
 }

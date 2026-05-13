@@ -1,6 +1,6 @@
 namespace WatchAppApi.Models;
 
-public class WatchDto
+public class Watch
 {
     public int Id { get; set; }
     public string Brand { get; set; } = default!;
